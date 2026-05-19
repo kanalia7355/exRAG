@@ -7,7 +7,7 @@ from pathlib import Path
 # ====== ここを書き換えれば研究室環境にも対応できる ======
 
 # RAG の参照対象ディレクトリ(実験ディレクトリ)
-SOURCE_DIR = Path(r"C:\Users\hirot\lab_ex")
+SOURCE_DIR = Path("./docs"")
 
 # ベクターストアの永続化ディレクトリ
 CHROMA_DIR = Path("./chroma_db")
