@@ -153,11 +153,11 @@ def split_ipynb(path: Path) -> list[Document]:
 SPLITTERS[".ipynb"] = split_ipynb
 ```
 
-## 研究室環境への移植手順
+## 移植手順
 
 1. このフォルダ一式をコピー
-2. `config.py` の `SOURCE_DIR` を研究室の実験ディレクトリへ
-3. 必要なら `LLM_MODEL` を研究室マシンのスペックに合わせて変更(例: `qwen2.5:14b`, `gpt-oss:20b` など)
+2. `config.py` の `SOURCE_DIR` を実験ディレクトリへ
+3. 必要なら `LLM_MODEL` をマシンのスペックに合わせて変更(例: `qwen2.5:14b`, `gpt-oss:20b` など)
 4. `ollama pull <モデル名>` でモデル取得
 5. `python run.py` で起動
 
