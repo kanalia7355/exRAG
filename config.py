@@ -7,7 +7,7 @@ from pathlib import Path
 # ====== ここを書き換えれば研究室環境にも対応できる ======
 
 # RAG の参照対象ディレクトリ(実験ディレクトリ)
-SOURCE_DIR = Path("./docs")
+SOURCE_DIR = Path(r"C:\Users\hirot\lab_ex")
 
 # ベクターストアの永続化ディレクトリ
 CHROMA_DIR = Path("./chroma_db")
@@ -16,8 +16,15 @@ CHROMA_DIR = Path("./chroma_db")
 MANIFEST_PATH = Path("./manifest.json")
 
 # Ollama モデル
-LLM_MODEL = "gemma3:4b"                  # 推論用。gpt-oss など他モデルへ差替え可
-EMBEDDING_MODEL = "nomic-embed-text"     # 埋め込み用
+# 軽量だが回答品質が低い: "gemma3:4b"
+# RTX 4070 + 32GB RAM 推奨: "qwen2.5:14b" / "qwen2.5-coder:14b"
+# それでも重い場合: "qwen2.5:7b"
+LLM_MODEL = "qwen2.5:14b"
+EMBEDDING_MODEL = "nomic-embed-text"
+
+# LLM 推論パラメータ
+LLM_TEMPERATURE = 0.2      # 低いほど一貫した回答に。0 〜 0.4 推奨
+LLM_NUM_CTX = 8192         # コンテキスト長。大きいモデル + 多検索結果なら 12288 など
 
 # ========================================================
 
@@ -58,8 +65,18 @@ CHUNK_SIZE_CODE = 1200
 CHUNK_OVERLAP_CODE = 150
 
 # 単一ファイルの最大サイズ(これより大きいファイルはスキップ)
-# PDF や XLSX は大きくなりやすいので少し余裕を持たせる
 MAX_FILE_BYTES = 20 * 1024 * 1024   # 20 MB
 
-# 類似検索で取得する件数
-TOP_K = 6
+# ---------- 検索パラメータ ----------
+
+# 類似検索で取得する件数。多いほど回答に厚みが出るが、
+# コンテキストウィンドウを圧迫する。8 〜 12 が目安。
+TOP_K = 8
+
+# 検索方法
+#   "similarity" : 純粋なベクトル類似度
+#   "mmr"        : 多様性を考慮(複数の出典が出やすく、引用の網羅性が上がる)
+SEARCH_TYPE = "mmr"
+
+# MMR のときに内部で候補として取り出す件数(TOP_K の2〜4倍が目安)
+MMR_FETCH_K = 24
